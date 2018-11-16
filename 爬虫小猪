@@ -1,0 +1,18 @@
+#-*- coding:utf-8 -*-
+import time
+from lxml import etree
+import requests
+
+url3 = 'http://sz.xiaozhu.com/'
+data3 = requests.get(url3).text
+#构造了一个XPath解析对象并对HTML文本进行自动修正
+h = etree.HTML(data3)
+home = h.xpath('//*[@id="page_list"]/ul/li')
+time.sleep(2)#注意，小猪在发爬虫方面做得比较好，防止被封IP就加个睡眠吧
+for div in home:
+    title = div.xpath('./div[2]/div/a/span/text()')[0] #标题
+    price = div.xpath('./div[2]/span[1]/i/text()')[0]#价格
+    describle = div.xpath('./div[2]/div/em/text()')[0].strip()#描述
+#     photo = div.xpath('./a/img/src/')[0]
+    time.sleep(2)
+    print ("{}-->{}-->{}\n".format(title,price,describle))
